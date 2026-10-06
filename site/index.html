@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="nl" class="h-full bg-slate-950 text-slate-100 font-sans antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quiz IT</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="h-full flex flex-col bg-slate-950 text-slate-100 select-none">
+
+    <header class="bg-slate-900 border-b border-slate-800 px-4 py-3 sticky top-0 z-30 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-earth-europe text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg sm:text-xl text-white tracking-tight leading-none">Quiz IT</h1>
+                    <p class="text-xs text-slate-400 mt-0.5">Nauwkeurige Geografische Kaart</p>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="flex items-center gap-3 sm:gap-5 bg-slate-950/80 px-4 py-2 rounded-full border border-slate-800 text-xs sm:text-sm font-semibold">
+                <div class="flex items-center gap-1.5" title="Totale Score">
+                    <i class="fa-solid fa-trophy text-amber-400"></i>
+                    <span id="stat-score" class="text-white font-bold">0</span>
+                </div>
+                <div class="w-px h-4 bg-slate-800"></div>
+                <div class="flex items-center gap-1.5" title="Streak Bonus">
+                    <i class="fa-solid fa-fire text-orange-500"></i>
+                    <span id="stat-streak" class="text-orange-400 font-bold">0x</span>
+                </div>
+                <div class="w-px h-4 bg-slate-800"></div>
+                <div class="flex items-center gap-1.5" title="Voortgang">
+                    <i class="fa-solid fa-flag text-blue-400"></i>
+                    <span id="stat-progress" class="text-white font-bold">1/16</span>
+                </div>
+                <div class="w-px h-4 bg-slate-800"></div>
+                <button id="btn-sound" class="text-slate-400 hover:text-white transition focus:outline-none" title="Geluid aan/uit">
+                    <i class="fa-solid fa-volume-high text-base text-blue-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 flex flex-col lg:flex-row gap-4">
+
+        <!-- Sidebar / Controls -->
+        <div class="w-full lg:w-80 flex flex-col gap-3">
+
+            <!-- Level Selector -->
+            <div class="bg-slate-900 rounded-2xl p-3 border border-slate-800 shadow-xl">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2.5 flex items-center justify-between">
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-layer-group text-blue-400"></i> Kies Niveau
+                    </span>
+                    <span id="high-score-tag" class="text-[10px] text-amber-400 font-semibold bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+                        Top: <span id="stat-highscore">0</span>
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 lg:grid-cols-1 gap-2 max-h-[220px] lg:max-h-none overflow-y-auto pr-1">
+                    <button class="level-btn active p-2.5 rounded-xl border border-blue-500 bg-blue-500/10 text-left transition flex items-center justify-between" data-level="1">
+                        <div>
+                            <div class="font-bold text-xs text-white">Niveau 1: Landen</div>
+                            <div class="text-[10px] text-emerald-400 font-medium mt-0.5">Uit je hoofd</div>
+                        </div>
+                        <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-flag text-xs"></i>
+                        </div>
+                    </button>
+
+                    <button class="level-btn p-2.5 rounded-xl border border-slate-800 bg-slate-950/60 text-left transition flex items-center justify-between opacity-85 hover:opacity-100" data-level="2">
+                        <div>
+                            <div class="font-bold text-xs text-white">Niveau 2: Hoofdsteden</div>
+                            <div class="text-[10px] text-amber-400 mt-0.5">Steden pinpointen</div>
+                        </div>
+                        <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-city text-xs"></i>
+                        </div>
+                    </button>
+
+                    <button class="level-btn p-2.5 rounded-xl border border-slate-800 bg-slate-950/60 text-left transition flex items-center justify-between opacity-85 hover:opacity-100" data-level="3">
+                        <div>
+                            <div class="font-bold text-xs text-white">Niveau 3: Buurlanden</div>
+                            <div class="text-[10px] text-purple-400 mt-0.5">Windrichtingen & buren</div>
+                        </div>
+                        <div class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-compass text-xs"></i>
+                        </div>
+                    </button>
+
+                    <button class="level-btn p-2.5 rounded-xl border border-slate-800 bg-slate-950/60 text-left transition flex items-center justify-between opacity-85 hover:opacity-100" data-level="4">
+                        <div>
+                            <div class="font-bold text-xs text-white">Niveau 4: Locaties</div>
+                            <div class="text-[10px] text-rose-400 mt-0.5">Eiffeltoren, Colosseum...</div>
+                        </div>
+                        <div class="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-monument text-xs"></i>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 rounded-2xl p-4 border border-blue-500/30 shadow-2xl flex-1 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between">
+                        <span id="level-badge" class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                            Niveau 1 – Landen
+                        </span>
+                        <button id="btn-hint" class="text-[11px] font-semibold text-amber-400 hover:text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/20 transition focus:outline-none">
+                            <i class="fa-solid fa-lightbulb"></i> Hint (75 pt)
+                        </button>
+                    </div>
+
+                    <div class="mt-4">
+                        <p id="question-label" class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Waar ligt:</p>
+                        <h2 id="question-text" class="text-xl sm:text-2xl font-black text-white mt-1 tracking-tight drop-shadow-md">
+                            🇳🇱 Nederland
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Live Feedback & Next Button -->
+                <div class="mt-6 pt-3 border-t border-slate-800/80 min-h-[110px] flex flex-col justify-between">
+                    <div id="feedback-text" class="text-xs font-semibold text-slate-400 min-h-[36px] flex items-center gap-2">
+                        <i class="fa-solid fa-hand-pointer text-blue-400 animate-bounce"></i> Tik of klik ergens op de kaart om te antwoorden!
+                    </div>
+
+                    <button id="btn-next" class="invisible w-full mt-3 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm uppercase tracking-wider transition">
+                        Volgende Vraag <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 bg-[#68b2e3] rounded-2xl border border-sky-400/40 p-1 sm:p-2 shadow-2xl relative overflow-hidden flex flex-col items-center justify-center min-h-[500px] self-start lg:self-stretch">
+            
+            <!-- Zoom Controls Overlay -->
+            <div class="absolute top-4 right-4 z-20 flex flex-col gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-700/80 shadow-lg backdrop-blur">
+                <button id="btn-zoom-in" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center transition focus:outline-none" title="Inzoomen">
+                    <i class="fa-solid fa-plus text-xs"></i>
+                </button>
+                <button id="btn-zoom-out" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center transition focus:outline-none" title="Uitzoomen">
+                    <i class="fa-solid fa-minus text-xs"></i>
+                </button>
+                <button id="btn-zoom-reset" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold flex items-center justify-center transition focus:outline-none" title="Reset zoom">
+                    <i class="fa-solid fa-rotate text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Map Instructions Badge -->
+            <div class="absolute bottom-4 left-4 z-20 bg-slate-900/80 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-700/60 text-[11px] text-slate-300 font-medium hidden sm:flex items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass-plus text-sky-400"></i> Zoom en klik om te pinpointen
+            </div>
+
+            <!-- Interactive Map SVG -->
+            <svg id="europe-map" class="w-full h-auto max-h-[78vh] aspect-[4/3] rounded-xl overflow-hidden cursor-crosshair shadow-inner select-none" viewBox="0 0 1000 750" xmlns="http://www.w3.org/2000/svg">
+                <g id="map-viewport" transform="translate(0,0) scale(1)">
+                    <!-- Ocean Background -->
+                    <rect width="1000" height="750" fill="#68b2e3" />
+
+                    <!-- Custom Map Graphic -->
+                    <image href="https://www.yourchildlearns.com/images/europe-map-2.png" x="0" y="0" width="1000" height="750" preserveAspectRatio="none" />
+
+                    <!-- Radar Hint Circle -->
+                    <circle id="hint-circle" class="hidden" cx="0" cy="0" r="110" fill="#f59e0b" fill-opacity="0.18" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6 4" />
+
+                    <!-- Connecting Line for Visual Feedback -->
+                    <line id="distance-line" class="dashed-line hidden" x1="0" y1="0" x2="0" y2="0" stroke="#f59e0b" stroke-width="3" />
+
+                    <!-- Red Player Flag -->
+                    <g id="player-flag" class="animated-flag hidden" transform="translate(0,0)">
+                        <ellipse cx="0" cy="0" rx="7" ry="3.5" fill="#000000" opacity="0.4" />
+                        <line x1="0" y1="0" x2="0" y2="-38" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+                        <path d="M 0,-38 L 26,-28 L 0,-18 Z" fill="#ef4444" stroke="#991b1b" stroke-width="1.5" stroke-linejoin="round" />
+                        <circle cx="0" cy="-38" r="3" fill="#ef4444" />
+                        <circle cx="0" cy="0" r="4" fill="#ef4444" stroke="#ffffff" stroke-width="1.5" />
+                    </g>
+
+                    <!-- Green Target Flag -->
+                    <g id="target-flag" class="animated-flag hidden" transform="translate(0,0)">
+                        <ellipse cx="0" cy="0" rx="7" ry="3.5" fill="#000000" opacity="0.4" />
+                        <line x1="0" y1="0" x2="0" y2="-38" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+                        <path d="M 0,-38 L 26,-28 L 0,-18 Z" fill="#22c55e" stroke="#14532d" stroke-width="1.5" stroke-linejoin="round" />
+                        <circle cx="0" cy="-38" r="3" fill="#22c55e" />
+                        <circle cx="0" cy="0" r="4" fill="#22c55e" stroke="#ffffff" stroke-width="1.5" />
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </main>
+
+    <div id="game-over-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center relative overflow-hidden">
+            <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center text-4xl shadow-lg shadow-amber-500/30 mb-4">
+                🏆
+            </div>
+            <h2 class="text-2xl font-black text-white">Niveau Voltooid!</h2>
+            <p id="modal-subtext" class="text-sm text-slate-400 mt-1">Geweldig gedaan! Hier zijn je resultaten:</p>
+
+            <div class="my-6 bg-slate-950/80 rounded-2xl p-4 border border-slate-800/80 flex justify-around">
+                <div>
+                    <div class="text-[11px] text-slate-400 uppercase font-bold">Eindscore</div>
+                    <div id="modal-final-score" class="text-2xl font-black text-amber-400 mt-0.5">0</div>
+                </div>
+                <div class="w-px h-10 bg-slate-800"></div>
+                <div>
+                    <div class="text-[11px] text-slate-400 uppercase font-bold">Max Streak</div>
+                    <div id="modal-max-streak" class="text-2xl font-black text-orange-400 mt-0.5">0x</div>
+                </div>
+                <div class="w-px h-10 bg-slate-800"></div>
+                <div>
+                    <div class="text-[11px] text-slate-400 uppercase font-bold">Beoordeling</div>
+                    <div id="modal-grade" class="text-2xl font-black text-emerald-400 mt-0.5">Goud</div>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="btn-modal-restart" class="flex-1 py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-wider transition">
+                    Opnieuw <i class="fa-solid fa-rotate-right ml-1"></i>
+                </button>
+                <button id="btn-modal-next-lvl" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider transition">
+                    Volgend Niveau <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
